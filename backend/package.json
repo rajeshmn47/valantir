@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.4.1",
+    "multer": "^2.1.1",
+    "openai": "^6.33.0",
+    "pdf-parse": "^1.1.4",
+    "pdf-to-png-converter": "^3.14.0",
+    "pdf2pic": "^3.2.0",
+    "sharp": "^0.34.5",
+    "string-similarity": "^4.0.4",
+    "tesseract.js": "^7.0.0"
+  }
+}
