@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const searchRoutes = require('./routes/searchRoutes');
 const profileRoutes = require('./routes/profileRoutes');
@@ -9,6 +10,7 @@ const matchRoutes = require('./routes/matchRoutes');
 const caseRoutes = require('./routes/caseRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const relationshipRoutes = require('./routes/relationshipRoutes');
+const faceLabelsRoutes = require('./routes/faceLabels');
 
 const app = express();
 
@@ -16,6 +18,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve the entire `refined_groups` folder under `/groups`
+const REFINED_GROUPS_DIR = "D:/instagramscraping/face_groups";
+app.use('/groups', express.static(REFINED_GROUPS_DIR));
+app.use('/annotated', express.static('D:/instagramscraping/annotated'));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -26,7 +33,6 @@ const Profile = require('./models/Profile');
 Profile.createIndexes().catch(console.error);
 
 const multer = require('multer');
-const path = require('path');
 
 // Configure storage
 const storage = multer.diskStorage({
@@ -66,7 +72,7 @@ app.use('/api/match', matchRoutes);
 app.use('/api/cases', caseRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/relationships', relationshipRoutes);
-
+app.use('/api', faceLabelsRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

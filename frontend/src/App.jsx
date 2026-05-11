@@ -8,6 +8,9 @@ import Analytics from './pages/Analytics';
 import AddPerson from './pages/AddPerson';
 import AllProfiles from './pages/AllProfiles';
 import EditProfile from './pages/EditPerson';
+import LabelFaces from './pages/LabelFaces';
+import StatsDashboard from './pages/StatsDashboard';
+import NetworkGraph from './pages/NetworkGraph';
 
 function App() {
   return (
@@ -35,6 +38,12 @@ function App() {
                   </svg>
                   Cases
                 </Link>
+                <Link to="/label-faces" className="flex items-center text-gray-900 hover:text-blue-600">
+                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Label Faces
+                </Link>
               </div>
             </div>
           </div>
@@ -50,6 +59,9 @@ function App() {
           <Route path="/cases" element={<CaseList />} />
           <Route path="/cases/:id" element={<CaseDetail />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/label-faces" element={<LabelFaces />} />
+          <Route path="/stats-dashboard" element={<StatsDashboard />} />
+          <Route path="/network-graph" element={<NetworkGraph />} />
         </Routes>
       </div>
     </Router>
