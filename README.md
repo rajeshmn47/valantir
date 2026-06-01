@@ -1,10 +1,9 @@
 <div align="center">
-<img width="1408" height="768" alt="Gemini_Generated_Image_xlz0nsxlz0nsxlz0" src="https://github.com/user-attachments/assets/557ef79f-bc70-44de-9cc8-967e1d0b82d7" />
 
 # ✦ VALANTIR ✦
 
 ### **Illuminate Complexity. Unlock Intelligence.**
-
+<img width="1408" height="768" alt="Gemini_Generated_Image_xlz0nsxlz0nsxlz0" src="https://github.com/user-attachments/assets/557ef79f-bc70-44de-9cc8-967e1d0b82d7" />
 <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
 <img src="https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
 <img src="https://img.shields.io/badge/API-Express-black?style=for-the-badge&logo=express&logoColor=white" />
