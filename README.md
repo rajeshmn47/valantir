@@ -1,4 +1,5 @@
 <div align="center">
+<img width="1408" height="768" alt="Gemini_Generated_Image_xlz0nsxlz0nsxlz0" src="https://github.com/user-attachments/assets/557ef79f-bc70-44de-9cc8-967e1d0b82d7" />
 
 # ✦ VALANTIR ✦
 
