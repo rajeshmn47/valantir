@@ -7,7 +7,8 @@
 <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
 <img src="https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
 <img src="https://img.shields.io/badge/API-Express-black?style=for-the-badge&logo=express&logoColor=white" />
-<img src="https://img.shields.io/badge/UI-TailwindCSS-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+<img src="https://img.shields.io/badge/UI-TailwindCSS-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white" /><img width="1380" height="752" alt="Gemini_Generated_Image_2u47a62u47a62u47 (1)" src="https://github.com/user-attachments/assets/efe1bc8d-87a1-45a2-8970-340d9bb5103c" />
+
 
 <br/>
 
