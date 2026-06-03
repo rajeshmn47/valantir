@@ -11,6 +11,7 @@ import EditProfile from './pages/EditPerson';
 import LabelFaces from './pages/LabelFaces';
 import StatsDashboard from './pages/StatsDashboard';
 import NetworkGraph from './pages/NetworkGraph';
+import Graph from './pages/Graph';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
           <Route path="/label-faces" element={<LabelFaces />} />
           <Route path="/stats-dashboard" element={<StatsDashboard />} />
           <Route path="/network-graph" element={<NetworkGraph />} />
+          <Route path="/graph" element={<Graph />} />
         </Routes>
       </div>
     </Router>

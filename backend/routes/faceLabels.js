@@ -18,7 +18,9 @@ router.get('/stats', faceLabelsController.getStats);
 router.get('/photos-by-hour', faceLabelsController.getPhotosByHour);
 router.get('/autocomplete/labels', faceLabelsController.autocompleteLabels);
 router.post('/auto-label', faceLabelsController.autoLabel);
+router.post('/download-profiles', faceLabelsController.downloadProfiles);
 router.get('/cluster-images', faceLabelsController.getClusterImages);
 router.get('/network', faceLabelsController.getNetwork)
+router.get('/check-followers-file', faceLabelsController.checkFollowersFile);
 
 module.exports = router;

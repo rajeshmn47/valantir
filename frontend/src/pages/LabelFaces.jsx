@@ -30,8 +30,24 @@ const LabelFaces = () => {
   const [clusterPhotos, setClusterPhotos] = useState([]);
   const [loadingClusterImages, setLoadingClusterImages] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(null);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadStatus, setDownloadStatus] = useState('');
+  const [hasFollowersFile, setHasFollowersFile] = useState(false);
 
   // Fetch sources
+
+  const checkFollowersFile = async (source) => {
+    try {
+      const res = await axios.get(`${API_BASE}/check-followers-file`, {
+        params: { source }
+      });
+      setHasFollowersFile(res.data.exists);
+    } catch (err) {
+      console.error('Failed to check followers file:', err);
+      setHasFollowersFile(false);
+    }
+  };
+
   const fetchSources = async () => {
     try {
       const res = await axios.get(`${API_BASE}/sources`);
@@ -69,6 +85,7 @@ const LabelFaces = () => {
       checkProcessingStatus(selectedSource);
       checkAnnotationStatus(selectedSource);
       fetchAnnotatedImages(selectedSource);
+      checkFollowersFile(selectedSource);
     }
   }, [selectedSource]);
 
@@ -239,6 +256,33 @@ const LabelFaces = () => {
     }
   };
 
+  const handleDownloadProfiles = async () => {
+    if (!selectedSource) return;
+    setDownloading(true);
+    setDownloadStatus('Starting download...');
+    try {
+      const res = await axios.post(`${API_BASE}/download-profiles`, {
+        sourceUsername: selectedSource
+      });
+      if (res.data.error) {
+        setDownloadStatus(`Failed: ${res.data.error}`);
+        alert(`Download failed: ${res.data.error}`);
+      } else {
+        setDownloadStatus(`Success: ${res.data.success} new profiles downloaded`);
+        alert(`Downloaded ${res.data.success} profile pictures`);
+        // Optionally refresh the groups (if new profiles affect auto-labeling)
+        fetchData(selectedSource);
+      }
+    } catch (err) {
+      console.error(err);
+      setDownloadStatus('Download failed');
+      alert('Download failed. Check console.');
+    } finally {
+      setDownloading(false);
+      setTimeout(() => setDownloadStatus(''), 5000);
+    }
+  };
+
   const openAnnotatedFolder = () => {
     window.open(`file:///D:/instagramscraping/annotated/${selectedSource}`, '_blank');
   };
@@ -248,7 +292,7 @@ const LabelFaces = () => {
     const label = labels[group.id]?.label || '';
     if (!searchTerm) return true;
     return label.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           group.id.toLowerCase().includes(searchTerm.toLowerCase());
+      group.id.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   if (loading && !groups.length) return <div style={{ color: 'white', padding: '1.5rem' }}>Loading face groups...</div>;
@@ -268,7 +312,7 @@ const LabelFaces = () => {
             <option key={src} value={src}>{src}</option>
           ))}
         </select>
-        
+
         <input
           type="text"
           placeholder="🔍 Search by name..."
@@ -276,7 +320,7 @@ const LabelFaces = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{ padding: '0.3rem 0.8rem', borderRadius: '0.375rem', backgroundColor: '#374151', color: 'white', border: 'none', width: '200px' }}
         />
-        
+
         <button
           onClick={() => setShowModal(true)}
           style={{ padding: '0.3rem 1rem', backgroundColor: '#4CAF50', border: 'none', borderRadius: '0.375rem', cursor: 'pointer' }}
@@ -308,7 +352,23 @@ const LabelFaces = () => {
         >
           🏷️ Auto‑Label
         </button>
-
+       {hasFollowersFile && (
+  <button
+    onClick={handleDownloadProfiles}
+    disabled={downloading}
+    style={{ 
+      padding: '0.3rem 1rem', 
+      backgroundColor: downloading ? '#6b7280' : '#e67e22', 
+      border: 'none', 
+      borderRadius: '0.375rem', 
+      cursor: downloading ? 'not-allowed' : 'pointer', 
+      color: 'white' 
+    }}
+  >
+    {downloading ? 'Downloading...' : '📥 Download Profile Pics'}
+  </button>
+)}
+        {downloadStatus && <span style={{ color: '#e67e22', fontSize: '0.8rem' }}>{downloadStatus}</span>}
         <button
           onClick={() => setShowGallery(true)}
           disabled={annotatedImages.length === 0}
@@ -336,12 +396,12 @@ const LabelFaces = () => {
           const datalistId = `suggestions-${group.id}`;
           const suggestionsForGroup = suggestionsMap[group.id] || [];
           return (
-            <div 
-              key={group.id} 
-              style={{ 
-                backgroundColor: '#1f2937', 
-                borderRadius: '0.5rem', 
-                padding: '1rem', 
+            <div
+              key={group.id}
+              style={{
+                backgroundColor: '#1f2937',
+                borderRadius: '0.5rem',
+                padding: '1rem',
                 boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
                 cursor: 'pointer',
                 transition: 'transform 0.2s, box-shadow 0.2s'
@@ -416,9 +476,9 @@ const LabelFaces = () => {
           flexDirection: 'column',
           overflow: 'hidden'
         }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
             padding: '1rem 1.5rem',
             backgroundColor: '#1f2937',
@@ -432,13 +492,13 @@ const LabelFaces = () => {
                 {clusterPhotos.length} photos • {selectedCluster?.size} face detections
               </p>
             </div>
-            <button 
+            <button
               onClick={() => setClusterModalOpen(false)}
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: 'white', 
-                fontSize: '1.5rem', 
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'white',
+                fontSize: '1.5rem',
                 cursor: 'pointer',
                 padding: '0.5rem'
               }}
@@ -458,23 +518,23 @@ const LabelFaces = () => {
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
                 {clusterPhotos.map((photo, idx) => (
-                  <div 
-                    key={idx} 
-                    style={{ 
-                      backgroundColor: '#1f2937', 
-                      borderRadius: '0.5rem', 
+                  <div
+                    key={idx}
+                    style={{
+                      backgroundColor: '#1f2937',
+                      borderRadius: '0.5rem',
                       overflow: 'hidden',
                       cursor: 'pointer',
                       transition: 'transform 0.2s'
                     }}
                     onClick={() => setEnlargedImage(photo)}
                   >
-                    <img 
+                    <img
                       src={`http://localhost:5000${photo.imageUrl || photo.originalUrl}`}
                       alt={`Photo ${idx + 1}`}
-                      style={{ 
-                        width: '100%', 
-                        height: 'auto', 
+                      style={{
+                        width: '100%',
+                        height: 'auto',
                         display: 'block',
                         borderBottom: '1px solid #374151'
                       }}
@@ -504,7 +564,7 @@ const LabelFaces = () => {
           justifyContent: 'center',
           flexDirection: 'column'
         }} onClick={() => setEnlargedImage(null)}>
-          <button 
+          <button
             onClick={() => setEnlargedImage(null)}
             style={{
               position: 'absolute',
@@ -519,21 +579,21 @@ const LabelFaces = () => {
           >
             ✖
           </button>
-          <img 
+          <img
             src={`http://localhost:5000${enlargedImage.annotatedUrl || enlargedImage.originalUrl}`}
             alt="Enlarged"
-            style={{ 
-              maxWidth: '90%', 
-              maxHeight: '90%', 
+            style={{
+              maxWidth: '90%',
+              maxHeight: '90%',
               objectFit: 'contain',
               borderRadius: '8px'
             }}
             onClick={(e) => e.stopPropagation()}
           />
-          <div style={{ 
-            position: 'absolute', 
-            bottom: '1rem', 
-            backgroundColor: 'rgba(0,0,0,0.7)', 
+          <div style={{
+            position: 'absolute',
+            bottom: '1rem',
+            backgroundColor: 'rgba(0,0,0,0.7)',
             padding: '0.5rem 1rem',
             borderRadius: '0.5rem',
             fontSize: '0.8rem'

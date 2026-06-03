@@ -1027,3 +1027,31 @@ exports.getNetwork = async (req, res) => {
         totalCoAppearances: edgesList.length
     });
 };
+
+exports.downloadProfiles = async (req, res) => {
+    const { sourceUsername } = req.body;
+    const excelPath = `D:/instagramscraping/accounts/${sourceUsername}/followers.xlsx`;
+    const outputFolder = `D:/instagramscraping/accounts/${sourceUsername}/downloaded_profiles`;
+    const cookieFile = `C:/Users/Lenovo/pythonocr/instagram/cookies.txt`;
+
+    const pythonScript = 'C:/Users/Lenovo/pythonocr/instagram/download_profiles_api.py';
+    const cmd = `python "${pythonScript}" "${sourceUsername}" "${excelPath}" "${outputFolder}" "${cookieFile}"`;
+
+    exec(cmd, (error, stdout, stderr) => {
+        if (error) return res.status(500).json({ error: stderr });
+        try {
+            const result = JSON.parse(stdout);
+            res.json(result);
+        } catch (e) {
+            res.status(500).json({ error: 'Failed to parse Python output', raw: stdout });
+        }
+    });
+}
+
+exports.checkFollowersFile = async (req, res) => {
+    const { source } = req.query;
+    if (!source) return res.status(400).json({ error: 'Missing source parameter' });
+    const excelPath = `D:/instagramscraping/accounts/${source}/followers.xlsx`;
+    const exists = fs.existsSync(excelPath);
+    res.json({ exists });
+};
