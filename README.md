@@ -1,6 +1,7 @@
 <div align="center">
 
-# ✦ VALANTIR ✦
+# ✦ VALANTIR ✦<img width="1408" height="768" alt="Gemini_Generated_Image_4p1xv84p1xv84p1x" src="https://github.com/user-attachments/assets/f7140a64-ec3f-41e5-a1ac-bd0594ae7f79" />
+
 
 ### **Illuminate Complexity. Unlock Intelligence.**
 <img width="1408" height="768" alt="Gemini_Generated_Image_xlz0nsxlz0nsxlz0" src="https://github.com/user-attachments/assets/557ef79f-bc70-44de-9cc8-967e1d0b82d7" />
